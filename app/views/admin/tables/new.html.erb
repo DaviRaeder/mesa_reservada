@@ -1,0 +1,74 @@
+<h1 class="text-3xl font-semibold text-gray-800 mb-6">Adicionar Nova Mesa</h1>
+
+<%= form_with model: @table, url: admin_tables_url, method: :post, local: true do |f| %>
+  <div class="mb-4">
+    <%= f.label :name, 'Nome da Mesa', class: 'block text-gray-700' %>
+    <%= f.text_field :name, class: 'w-full border border-gray-300 rounded-md p-2' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :capacity, 'Capacidade', class: 'block text-gray-700' %>
+    <%= f.number_field :capacity, class: 'w-full border border-gray-300 rounded-md p-2' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :description, 'Descrição', class: 'block text-gray-700' %>
+    <%= f.text_area :description, rows: 4, class: 'w-full border border-gray-300 rounded-md p-2' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :status, 'Status', class: 'block text-gray-700 font-medium' %>
+    <div class="relative">
+      <button type="button"
+              class="w-full bg-transparent text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+              id="custom-select-btn">
+        <span id="selected-status"><%= @table.status %></span>
+      </button>
+
+      <div id="custom-select-options" class="absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded shadow-md hidden">
+        <button type="button" class="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100" data-value="disponivel">
+          Disponível
+        </button>
+        <button type="button" class="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100" data-value="reservada">
+          Reservada
+        </button>
+      </div>
+
+      <div class="hidden">
+        <%= f.select :status, options_for_select(['disponivel', 'reservada'], @table.status), {
+          class: 'hidden',
+          id: 'custom-select',
+          onchange: 'updateSelectedStatus()'
+        } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <%= f.submit 'Criar Mesa', class: 'bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600' %>
+    <%= link_to 'Cancelar', admin_tables_path, class: 'text-red-500 hover:text-red-600 ml-4' %>
+  </div>
+<% end %>
+
+<script>
+  document.getElementById('custom-select-btn').addEventListener('click', function () {
+    const options = document.getElementById('custom-select-options');
+    options.classList.toggle('hidden');
+  });
+
+  document.querySelectorAll('#custom-select-options button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const value = this.getAttribute('data-value');
+      document.getElementById('table_status').value = value;
+
+      document.getElementById('selected-status').textContent = this.textContent;
+
+      document.getElementById('custom-select-options').classList.add('hidden');
+    });
+  });
+
+  function updateSelectedStatus() {
+    const selectedValue = document.getElementById('table_status').value;
+    document.getElementById('selected-status').textContent = selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1);
+  }
+</script>

@@ -1,0 +1,59 @@
+<div class="container mx-auto my-8 px-4">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">Mesas Disponíveis</h1>
+
+  <table class="min-w-full table-auto bg-white shadow-md rounded-lg">
+    <thead>
+      <tr class="bg-gray-100 text-left">
+        <th class="px-6 py-3 text-gray-700">Número</th>
+        <th class="px-6 py-3 text-gray-700">Capacidade</th>
+        <th class="px-6 py-3 text-gray-700">Status</th>
+        <th class="px-6 py-3 text-gray-700">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tables.each do |table| %>
+        <tr class="border-t">
+          <td class="px-6 py-4 text-gray-800"><%= table.identifier %></td>
+          <td class="px-6 py-4 text-gray-800"><%= table.capacity %></td>
+          <td class="px-6 py-4 text-gray-800"><%= table.status %></td>
+          <td class="px-6 py-4">
+            <%= link_to 'Editar', edit_table_path(table), class: 'inline-block px-4 py-2 text-yellow-600 hover:bg-yellow-100 cursor-pointer rounded-lg transition' %>
+            <%= link_to 'Deletar', table, method: :delete, data: { confirm: 'Você tem certeza?' }, class: 'inline-block px-4 cursor-pointer py-2 text-red-600 hover:bg-red-100 rounded-lg transition delete' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="mt-6">
+    <%= link_to 'Nova Mesa', new_table_path, class: 'inline-block px-6 py-2 bg-blue-600 cursor-pointer text-white rounded-lg shadow hover:bg-blue-500 transition' %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const deleteLinks = document.querySelectorAll('.delete');
+
+      deleteLinks.forEach(link => {
+          link.addEventListener('click', function (event) {
+              event.preventDefault();
+
+              const url = link.getAttribute('href');
+
+              fetch(url, {
+                  method: 'DELETE',
+                  headers: {
+                      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                      'Content-Type': 'application/json'
+                  },
+              })
+              .then(response => {
+                location.reload();
+              })
+              .catch(error => {
+                  console.error('Erro:', error);
+              });
+          });
+      });
+  });
+</script>

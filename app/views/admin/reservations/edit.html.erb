@@ -1,0 +1,27 @@
+<h1 class="text-3xl font-semibold text-gray-800 mb-6">Editar Reserva</h1>
+
+<%= form_for @reservation, url: admin_reservation_path(@reservation), method: :put, class: "space-y-6" do |f| %>
+  <div class="field">
+    <%= f.label :user_id, "Usuário", class: "block text-gray-700" %>
+    <%= f.collection_select :user_id, User.all, :id, :name, { prompt: "Selecione um Usuário" }, class: "w-full border border-gray-300 p-2 rounded-md" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :table_id, "Mesa", class: "block text-gray-700" %>
+    <%= f.collection_select :table_id, Table.all, :id, :name, { prompt: "Selecione uma Mesa" }, class: "w-full border border-gray-300 p-2 rounded-md" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_time, "Data de Início", class: "block text-gray-700" %>
+    <%= f.datetime_local_select :start_time, class: "w-full border border-gray-300 p-2 rounded-md" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_time, "Data de Término", class: "block text-gray-700" %>
+    <%= f.datetime_local_select :end_time, class: "w-full border border-gray-300 p-2 rounded-md" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Salvar", class: "bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500" %>
+  </div>
+<% end %>

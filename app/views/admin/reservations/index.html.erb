@@ -1,0 +1,54 @@
+<h1 class="text-3xl font-semibold text-gray-800 mb-6">Reservas</h1>
+<table class="min-w-full bg-white border border-gray-300 rounded-md">
+  <thead>
+    <tr class="bg-gray-100 text-left text-gray-700">
+      <th class="px-4 py-2 border-b">Usuário</th>
+      <th class="px-4 py-2 border-b">Mesa</th>
+      <th class="px-4 py-2 border-b">Data de Início</th>
+      <th class="px-4 py-2 border-b">Data de Término</th>
+      <th class="px-4 py-2 border-b">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-2 border-b"><%= reservation.user.name %></td>
+        <td class="px-4 py-2 border-b"><%= reservation.table.name %></td>
+        <td class="px-4 py-2 border-b"><%= reservation.start_time.strftime('%d/%m/%Y %H:%M') %></td>
+        <td class="px-4 py-2 border-b"><%= reservation.end_time.strftime('%d/%m/%Y %H:%M') %></td>
+        <td class="px-4 py-2 border-b">
+          <%= link_to 'Ver', admin_reservation_path(reservation), class: "text-blue-500 hover:text-blue-600" %>
+          <%= link_to 'Editar', edit_admin_reservation_path(reservation), class: "text-yellow-500 hover:text-yellow-600 ml-4" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const deleteLinks = document.querySelectorAll('.delete');
+
+      deleteLinks.forEach(link => {
+          link.addEventListener('click', function (event) {
+              event.preventDefault();
+
+              const url = link.getAttribute('href');
+
+              fetch(url, {
+                  method: 'DELETE',
+                  headers: {
+                      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                      'Content-Type': 'application/json'
+                  },
+              })
+              .then(response => {
+                location.reload();
+              })
+              .catch(error => {
+                  console.error('Erro:', error);
+              });
+          });
+      });
+  });
+</script>

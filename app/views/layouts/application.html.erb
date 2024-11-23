@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva de Mesas</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+  <nav class="bg-white shadow-sm rounded-lg">
+    <div class="container mx-auto px-4 flex justify-between items-center py-4">
+      <a href="/" class="text-2xl font-bold text-orange-600 hover:text-orange-800 transition duration-300">Mesa Reservada</a>
+
+      <button class="lg:hidden block text-gray-700 focus:outline-none hover:text-orange-600 transition duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <ul class="hidden lg:flex space-x-8">
+        <% if user_signed_in? %>
+          <% if current_user.admin? %>
+            <li><%= link_to 'Admin', admin_dashboards_path, class: 'text-gray-700 hover:text-orange-600 font-medium transition duration-300' %></li>
+          <% end %>
+          <li><%= link_to 'Perfil', edit_user_registration_path, class: 'text-gray-700 hover:text-orange-600 font-medium transition duration-300' %></li>
+          <li><%= link_to 'Sair', destroy_user_session_path, method: :delete, class: 'text-gray-700 hover:text-orange-600 font-medium transition duration-300 logout' %></li>
+        <% else %>
+          <li><%= link_to 'Entrar', new_user_session_path, class: 'text-gray-700 hover:text-orange-600 font-medium transition duration-300' %></li>
+          <li><%= link_to 'Cadastrar', new_user_registration_path, class: 'text-gray-700 hover:text-orange-600 font-medium transition duration-300' %></li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="container mx-auto my-8 px-4 flex-grow">
+    <%= yield %>
+  </div>
+
+  <footer class="bg-white text-gray-600 border-t mt-8">
+    <div class="container mx-auto py-6 px-4 text-center">
+      <p>&copy; 2024 Mesa Reservada. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const deleteLinks = document.querySelectorAll('.logout');
+
+      deleteLinks.forEach(link => {
+          link.addEventListener('click', function (event) {
+              event.preventDefault();
+
+              const url = link.getAttribute('href');
+
+              fetch(url, {
+                  method: 'DELETE',
+                  headers: {
+                      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                      'Content-Type': 'application/json'
+                  },
+              })
+              .then(response => {
+                location.reload();
+              })
+              .catch(error => {
+                  console.error('Erro:', error);
+              });
+          });
+      });
+  });
+</script>

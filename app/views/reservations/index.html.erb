@@ -1,0 +1,56 @@
+<div class="container mx-auto my-8 px-4">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">Minhas Reservas</h1>
+
+  <table class="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+      <tr>
+        <th class="py-3 px-6 text-left">Mesa</th>
+        <th class="py-3 px-6 text-left">Data e Hora</th>
+        <th class="py-3 px-6 text-left">Ações</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700 text-sm font-light">
+      <% @reservations.each do |reservation| %>
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+          <td class="py-3 px-6 whitespace-nowrap"><%= reservation.table.name %></td>
+          <td class="py-3 px-6 whitespace-nowrap"><%= reservation.date_time.strftime('%d/%m/%Y %H:%M') %></td>
+          <td class="py-3 px-6 whitespace-nowrap">
+            <%= link_to 'Cancelar', reservation_path(reservation), method: :delete, data: { confirm: 'Você tem certeza?' }, class: 'text-red-500 hover:underline cancel' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="mt-6">
+    <%= link_to 'Nova Reserva', new_reservation_path, class: 'inline-block px-6 py-2 text-white cursor-pointer bg-orange-600 rounded-lg shadow hover:bg-orange-500' %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const deleteLinks = document.querySelectorAll('.cancel');
+
+      deleteLinks.forEach(link => {
+          link.addEventListener('click', function (event) {
+              event.preventDefault();
+
+              const url = link.getAttribute('href');
+
+              fetch(url, {
+                  method: 'DELETE',
+                  headers: {
+                      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                      'Content-Type': 'application/json'
+                  },
+              })
+              .then(response => {
+                location.reload();
+              })
+              .catch(error => {
+                  console.error('Erro:', error);
+              });
+          });
+      });
+  });
+</script>

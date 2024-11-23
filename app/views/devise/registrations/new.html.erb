@@ -1,0 +1,31 @@
+<div class="bg-white p-8 rounded-lg mx-auto mt-10 shadow-lg w-full sm:w-96">
+  <h2 class="text-3xl font-semibold text-center text-gray-700 mb-6">Criar conta</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="field mt-4">
+      <%= f.label :email, "E-mail", class: "block text-gray-700 font-medium" %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "mt-2 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="field mt-4">
+      <%= f.label :password, "Senha", class: "block text-gray-700 font-medium" %>
+      <% if @minimum_password_length %>
+        <em class="text-sm text-gray-500">(<%= @minimum_password_length %> caracteres no mínimo)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "new-password", class: "mt-2 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="field mt-4">
+      <%= f.label :password_confirmation, "Confirmar senha", class: "block text-gray-700 font-medium" %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-2 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="actions mt-6 mb-4">
+      <%= f.submit "Cadastrar", class: "w-full bg-blue-500 cursor-pointer text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+</div>

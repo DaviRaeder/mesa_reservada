@@ -1,0 +1,7 @@
+<p class="text-lg font-semibold text-gray-700">Olá <span class="text-blue-500"><%= @email %></span>!</p>
+
+<% if @resource.try(:unconfirmed_email?) %>
+  <p class="mt-4 text-gray-600">Estamos entrando em contato para notificá-lo de que seu e-mail está sendo alterado para <span class="text-blue-500"><%= @resource.unconfirmed_email %></span>.</p>
+<% else %>
+  <p class="mt-4 text-gray-600">Estamos entrando em contato para notificá-lo de que seu e-mail foi alterado para <span class="text-blue-500"><%= @resource.email %></span>.</p>
+<% end %>

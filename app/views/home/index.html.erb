@@ -1,0 +1,46 @@
+<div class="container mx-auto my-8 px-4">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Bem-vindo a Mesa Reservada</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-6">
+      <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mesas Disponíveis</h2>
+        <% if @available_tables.any? %>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% @available_tables.each do |table| %>
+              <div class="bg-green-100 border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                <h3 class="text-xl font-semibold text-gray-700">Mesa <%= table.identifier %></h3>
+                <p class="text-gray-600">Capacidade: <%= table.capacity %> pessoas</p>
+                <div class="mt-4">
+                  <%= link_to 'Reservar', new_reservation_path(table_id: table.id), class: 'btn btn-success text-white px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg shadow-md' %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-gray-600">Não há mesas disponíveis no momento.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mesas Reservadas</h2>
+        <% if @reserved_tables.any? %>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% @reserved_tables.each do |table| %>
+              <div class="bg-blue-100 border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                <h3 class="text-xl font-semibold text-gray-700">Mesa <%= table.identifier %></h3>
+                <p class="text-gray-600">Capacidade: <%= table.capacity %> pessoas</p>
+                <p class="text-gray-600">Reserva para: <%= table.reservation.date_time.strftime('%d/%m/%Y %H:%M') %></p>
+                <p class="text-gray-600">Status: <%= table.status %></p>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-gray-600">Não há mesas reservadas no momento.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

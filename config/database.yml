@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password: juri0508
+  host: localhost
+  port: 3306
+
+development:
+  <<: *default
+  database: "mesa_reservada"
+
+test:
+  <<: *default
+  database: "mesa_reservada"
+
+production:
+  <<: *default
+  database: "mesa_reservada"
